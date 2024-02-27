@@ -26,36 +26,21 @@ def run_map_reduce(map_f, reduce_f, docs):
     return [reduce_f(g) for g in groups]
 
 def word_count_map(doc):
-    """
-    Params:
-      doc....a string to be split into tokens. split on whitespace.
-    Returns:
-      a list of tuples of form (token, 1), where token is a whitespace delimited element of this string.
-      
-    E.g.
-    >>> word_count_map('i am sam i am')
-    [('i', 1), ('am', 1), ('sam', 1), ('i', 1), ('am', 1)]
-    """
-    ###TODO
-    
+  tokens = doc.split()
+  result = []
+
+  for token in tokens:
+      result.append((token, 1))
+  return result
     
 
 
 def word_count_reduce(group):
-    """
-    Params:
-      group...a tuple of the form (token, list_of_ones), indicating the number of times each word appears.
-    Returns:
-      tuple of form (token, int), where int is the number of times that token appears
-    E.g.
-    >>> word_count_reduce(['i', [1,1]])
-    ('i', 2)
+
+  token, list_of_ones = group
+  sum_of_ones = reduce(lambda x, y: x + y, 0, list_of_ones)
     
-    NOTE: you should use call the `reduce` function here.
-    """
-    ###TODO
-    
-    
+  return (token, sum_of_ones)
 
 
 def iterate(f, x, a):
@@ -111,16 +96,11 @@ def reduce(f, id_, a):
 def sentiment_map(doc,
                   pos_terms=set(['good', 'great', 'awesome', 'sockdolager']),
                   neg_terms=set(['bad', 'terrible', 'waste', 'carbuncle', 'corrupted'])):
-    """
-    Params:
-      doc.........a string to be split into tokens. split on whitespace.
-      pos_terms...a set of positive terms
-      neg_terms...a set of negative terms
-    Returns:
-      a list of tuples of form (positive, 1) or (negative, 1)      
-    E.g.
-    >>> sentiment_map('it was a terrible waste of time')
-    [('negative', 1), ('negative', 1)]
-    """
-    ###TODO
+  result = []
+  for term in doc.split():
+    if term in pos_terms:
+      result.append(('positive', 1))
+    elif term in neg_terms:
+      result.append(('negative', 1))
+  return result
 
